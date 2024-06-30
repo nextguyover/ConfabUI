@@ -1,0 +1,35 @@
+{
+	"name": "confabui",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"dev": "vite dev",
+		"build": "rollup -c rollup.config.js",
+		"preview": "vite preview"
+	},
+	"devDependencies": {
+		"@rollup/plugin-alias": "^5.1.0",
+		"@rollup/plugin-commonjs": "^25.0.7",
+		"@rollup/plugin-node-resolve": "^15.2.3",
+		"@rollup/plugin-terser": "^0.4.4",
+		"@sveltejs/adapter-auto": "^2.0.0",
+		"@sveltejs/kit": "^1.20.4",
+		"autoprefixer": "^10.4.17",
+		"rollup": "^4.9.2",
+		"rollup-plugin-copy": "^3.5.0",
+		"rollup-plugin-delete": "^2.0.0",
+		"rollup-plugin-gzip": "^3.1.1",
+		"rollup-plugin-postcss": "^4.0.2",
+		"rollup-plugin-svelte": "^7.1.6",
+		"svelte": "^4.0.5",
+		"vite": "^4.4.2"
+	},
+	"type": "module",
+	"dependencies": {
+		"@fortawesome/free-solid-svg-icons": "^6.4.2",
+		"highlight.js": "^11.9.0",
+		"svelte-autosize": "^1.1.0",
+		"svelte-fa": "^3.0.4",
+		"svelte-markdown": "^0.3.0"
+	}
+}

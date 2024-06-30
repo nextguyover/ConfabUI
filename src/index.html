@@ -1,0 +1,19 @@
+<html>
+<body>
+    <script>
+        var darkMode = false;
+
+        const toggleDarkMode = () => {
+            darkMode = !darkMode;
+            document.dispatchEvent(new CustomEvent('setConfabDarkMode', { detail: { darkMode } }));
+
+            document.body.style.backgroundColor = darkMode ? "#000" : "#FFF";
+        }
+    </script>
+    <button onclick="toggleDarkMode()">Toggle darkmode</button>
+    <br/><br/>
+    <div>
+        <script src="./confab-loader.js" Confab_API="http://localhost:2632" darkModeInitial=false></script>
+    </div>
+</body>
+</html>
