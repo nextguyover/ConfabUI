@@ -110,21 +110,15 @@
 		});
 	};
 
-	let currentLocation = "/blogpost";
-
 	const addReply = () => {
 		if (!userData.email) {
 			rootActions.scrollToAuthPanel();
 			return;
 		}
 
-		let newReply = {
-			newComment: true,
-			location: currentLocation,
-		};
-
 		if(!comment.childComments.find((c) => c.newComment === true)){
-			comment.childComments = [newReply, ...comment.childComments]; //using spread syntax here rather than array.push() necessary for svelte re-render
+			rootActions.registerNewOrEdit("new", comment.commentId);
+			comment.childComments = [{newComment: true}, ...comment.childComments]; //using spread syntax here rather than array.push() necessary for svelte re-render
 			setTimeout(() => rootActions.scrollIntoView("#" + comment.commentId + "-reply", true), rootActions.getNewCommentAnimDuration() + 50);
 		}
 		else {
@@ -134,6 +128,7 @@
 
 	const removeReply = () => {
 		comment.childComments = comment.childComments.toSpliced(comment.childComments.find((c) => c.newComment === true), 1);
+		rootActions.deregisterNewOrEdit("new", comment.commentId);
 	};
 
 	
@@ -176,6 +171,7 @@
 			newReplyPending = true;
 			let newReplyId = await submitReply(newReplyContent);
 			if (newReplyId) {
+				rootActions.deregisterNewOrEdit("new", parent === null ? "root" : parent.commentId);
 				await rootActions.refreshComments();
 				rootActions.scrollIntoView("#" + newReplyId);
 			} else {
@@ -279,6 +275,7 @@
 	}
 
 	const startEdit = () => {
+		rootActions.registerNewOrEdit("edit", comment.commentId);
 		showPreview = false;
 		comment.currentlyEditing = true;
 		newReplyContent = newReplyContent ? newReplyContent : comment.content;
@@ -311,6 +308,7 @@
 				json = await response.json();
 			} catch{} finally {
 				if (response?.ok) {
+					rootActions.deregisterNewOrEdit("edit", comment.commentId);
 					await rootActions.refreshComments();
 					newReplyPending = false;
 					return;
@@ -330,6 +328,7 @@
 	}
 
 	const cancelEdit = () => {
+		rootActions.deregisterNewOrEdit("edit", comment.commentId);
 		comment.currentlyEditing = false;
 	}
 

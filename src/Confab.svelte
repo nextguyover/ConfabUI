@@ -63,6 +63,24 @@
 	let commentHistoryItem;
 	let commentHistoryModalEnabled = false;
 
+	let currentReplyList = [];
+	let currentEditList = [];
+
+	let restoreRepliesAndEditsInProgress = (comments) => {
+		comments.forEach((comment) => {
+			if (currentReplyList.includes(comment.commentId)) {
+				comment.childComments = [{newComment: true}, ...comment.childComments];
+			}
+			if (currentEditList.includes(comment.commentId)) {
+				comment.currentlyEditing = true;
+			}
+
+			if (comment.childComments) {
+				restoreRepliesAndEditsInProgress(comment.childComments);
+			}
+		});
+	};
+
 	let rootActions = {
 		getApi: () => {
 			return PUBLIC_API_URL;
@@ -82,6 +100,10 @@
 			} catch{} finally {
 				if (response?.ok && json) {
 					comments = json;
+					if(currentReplyList.includes("root")){	//restore root lvl reply if it was in progress before refresh
+						comments = [{newComment: true}, ...comments];
+					}
+					restoreRepliesAndEditsInProgress(comments);
 				}
 				else{
 					comments = false;
@@ -108,6 +130,20 @@
 						commentingEnabled = true;
 					}
 				}
+			}
+		},
+		registerNewOrEdit: (type, parentId) => {
+			if(type == "new"){
+				currentReplyList.push(parentId);
+			} else if(type == "edit"){
+				currentEditList.push(parentId);
+			}
+		},
+		deregisterNewOrEdit: (type, parentId) => {
+			if(type == "new"){
+				currentReplyList = currentReplyList.filter((id) => id !== parentId);
+			} else if(type == "edit"){
+				currentEditList = currentEditList.filter((id) => id !== parentId);
 			}
 		},
 		printCommentTree: () => {
@@ -259,13 +295,9 @@
 			return;
 		}
 
-		let newReply = {
-			newComment: true,
-			location: commentLocation,
-		};
-
 		if(!comments.find((c) => c.newComment === true)){
-			comments = [newReply, ...comments]; //using spread syntax here rather than array.push() necessary for svelte re-render
+			rootActions.registerNewOrEdit("new", "root");
+			comments = [{newComment: true}, ...comments]; //using spread syntax here rather than array.push() necessary for svelte re-render
 			setTimeout(() => rootActions.scrollIntoView("#root-reply", true), rootActions.getNewCommentAnimDuration() + 50);
 		}
 		else {
@@ -274,6 +306,7 @@
 	};
 
 	const removeNewTopLevelReply = () => {
+		rootActions.deregisterNewOrEdit("new", "root");
 		comments = comments.toSpliced(comments.find((c) => c.newComment === true), 1);
 	};
 </script>
