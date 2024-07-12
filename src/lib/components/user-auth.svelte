@@ -655,6 +655,7 @@
 					Hi,
 					{#if changeUsernameEnabled === "enabled"}
 						<span bind:this={usernameRef} 
+							on:drop={(e) => e.preventDefault()}
 							class="user-auth-panel-change-username" 
 							class:user-auth-panel-change-username-enabled={changeUsernameEnabled === "enabled"}
 							class:user-auth-panel-change-username-error={userNameEditValueInvalid} 
