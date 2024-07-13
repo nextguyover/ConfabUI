@@ -212,8 +212,10 @@
 
 			if (comments.childComments) {
 				comments.childComments.forEach((comment) => {
-					count += rootActions.commentCountRecursive(comment);
-					count += 1;
+					if(!comment.newComment){
+						count += rootActions.commentCountRecursive(comment);
+						count += 1;
+					}
 				});
 			}
 
