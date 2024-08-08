@@ -572,7 +572,7 @@
 			{#if loginState == "pending" || loginState == "awaitingApi"}
 				<Loading/>
 			{:else if loginState == "email"}
-				<div class="user-login-title">Enter email to comment anonymously</div>
+				<div class="user-login-title">Enter email to start commenting</div>
 				<div class="user-login-email">
 					<form class="user-login-email-input-container">
 						<input class="user-login-email-input" class:user-login-email-invalid={emailInvalid} placeholder="email@example.com" bind:value={email} />
