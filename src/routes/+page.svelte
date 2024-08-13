@@ -4,7 +4,7 @@
 	import { PUBLIC_API_URL } from "$env/static/public";
 	import { onMount } from "svelte";
 
-	var darkMode = false;
+	var darkMode = true;
 	$: refreshDarkMode(darkMode);
 	const refreshDarkMode = (darkMode) => {
 		try{
