@@ -161,6 +161,7 @@
         VerificationCodeGenericFailure: 7,
         VerificationEmailsRateLimit: 8,
         AuthenticationDisabled: 9,
+        MaxNewSignupsLimitFailure: 10,
     }
 
 	const emailSubmit = async () => {
@@ -207,6 +208,9 @@
 			}
 			else if (json?.outcome === LoginOutcome.AuthenticationDisabled){
 				emailError = "Login currently disabled. Try again later.";
+			}
+			else if (json?.outcome === LoginOutcome.MaxNewSignupsLimitFailure){
+				emailError = "New logins have been temporarily limited. Try again later.";
 			}
 			else if (json?.outcome === LoginOutcome.EmailGenericFailure){
 				emailError = json?.errorMessage;
