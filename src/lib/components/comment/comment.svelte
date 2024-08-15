@@ -111,7 +111,7 @@
 	};
 
 	const addReply = () => {
-		if (!userData.email) {
+		if (!userData.userId && !rootActions.getAnonCommentingEnabled()) {
 			rootActions.scrollToAuthPanel();
 			return;
 		}
@@ -189,6 +189,15 @@
 	}
 
 	let submitReply = async (content) => {
+		if(localStorage.getItem("jwtToken") === null){
+			if(rootActions.getAnonCommentingEnabled()){
+				await rootActions.anonLogin();	// if anonymous commenting is enabled, get anon auth token
+			} else {
+				rootActions.scrollToAuthPanel();
+				return false;
+			}
+		}
+
 		let response, json;
 		try {
 			response = await fetch(PUBLIC_API_URL + "/comment/new", {
@@ -647,7 +656,9 @@
 							{/if}
 							<div class="user">
 								<div class="user-icon">
-									<img use:onProfilePicLoad class="user-icon-img" class:user-icon-image-hidden={!profilePicLoaded} src={PUBLIC_API_URL + "/user/get-profile-picture/" + userData.userId} alt="Profile" />
+									{#if userData.userId}
+										<img use:onProfilePicLoad class="user-icon-img" class:user-icon-image-hidden={!profilePicLoaded} src={PUBLIC_API_URL + "/user/get-profile-picture/" + userData.userId} alt="Profile" />
+									{/if}
 									{#if !profilePicLoaded}
 										<div class="user-icon-placeholder"><Fa icon={faUser} /></div>
 									{/if}

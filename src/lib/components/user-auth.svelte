@@ -14,12 +14,18 @@
 	export let userData;
 	export let apiAvailable;
 	export let isAuthenticated = false;
+	export let refreshUserAuth = false;
 
     const PUBLIC_API_URL = getContext("PUBLIC_API_URL");
 
 	let loginState = "awaitingApi"; //email, code, pending, authenticated, unavailable, awaitingApi
 
-    $: loginState = apiAvailable === "pending" ? "awaitingApi" : apiAvailable === false ? "unavailable" : "pending";
+    $: {
+		if(refreshUserAuth !== undefined)
+			loginState = apiAvailable === "pending" ? "awaitingApi" : 
+				apiAvailable === false ? "unavailable" : 
+				"pending";
+	}
 
 	const UserRole = {
 		Standard: 0,
@@ -121,31 +127,39 @@
 					Authorization: "Bearer " + localStorage.getItem("jwtToken"),
 				},
 			})
-				.then((response) => {
-					if (response.ok) {
-						return response.json();
-					}
-					return Promise.reject(response);
-				})
-				.then((json) => {
-					rootActions.initUserData({
-						email: json.email,
-						userId: json.userId,
-						username: json.username,
-						role: json.role,
-					});
-
-					loginState = "authenticated";
-					
-					getChangeUsernameEnabled();
-					return;
-				})
-				.catch((response) => {
+			.then((response) => {
+				if (response.ok) {
+					return response.json();
+				}
+				return Promise.reject(response);
+			})
+			.then((json) => {
+				if(json.isAnon && !rootActions.getAnonCommentingEnabled()){
 					localStorage.removeItem("jwtToken");
 					loginState = "email";
+					return;
+				}
+
+				rootActions.initUserData({
+					email: json.email,
+					userId: json.userId,
+					username: json.username,
+					role: json.role,
 				});
+
+				if(json.isAnon){
+					loginState = "email";
+				} else {
+					loginState = "authenticated";
+					getChangeUsernameEnabled();
+				}
+			})
+			.catch(() => {
+				localStorage.removeItem("jwtToken");
+				loginState = rootActions.getAnonCommentingEnabled() ? "anonymous" : "email";
+			});
 		} else {
-			loginState = "email";
+			loginState = rootActions.getAnonCommentingEnabled() ? "anonymous" : "email";
 		}
 	};
 
@@ -576,7 +590,14 @@
 			{#if loginState == "pending" || loginState == "awaitingApi"}
 				<Loading/>
 			{:else if loginState == "email"}
-				<div class="user-login-title">Enter email to start commenting</div>
+				<div class="user-login-title">
+					{#if rootActions.getAnonCommentingEnabled()}
+						Sign in for more features
+						<div class="user-login-subtitle">Receive reply notifications, change username, and more...</div>
+						{:else}
+						Enter email to start commenting
+					{/if}
+				</div>
 				<div class="user-login-email">
 					<form class="user-login-email-input-container">
 						<input class="user-login-email-input" class:user-login-email-invalid={emailInvalid} placeholder="email@example.com" bind:value={email} />
@@ -694,6 +715,13 @@
 						{usernameFeedback}
 					</div>
 				{/if}
+			{:else if loginState == "anonymous"}
+				<div class="user-login-unavailable-login-btn" role="button" tabindex="0" on:click={() => loginState = "email"} on:keypress={() => loginState = "email"}>
+					Go to login
+				</div>
+				<br/><br/>
+				<div class="user-login-title">Join the conversation!</div>
+				<br/>
 			{:else if loginState == "unavailable"}
 				<div class="user-login-unavailable-login-btn" role="button" tabindex="0" on:click={() => loginState = "pending"} on:keypress={() => loginState = "pending"}>
 					Go to login
@@ -769,6 +797,12 @@
 		font-family: "Questrial", sans-serif;
 		text-align: center;
 		font-size: 2em;
+	}
+
+	.user-login-subtitle {
+		margin-top: 7px;
+		font-size: 0.5em;
+		color: var(--comment-color-grey-dark);
 	}
 
 	.user-login-email-input-container {
@@ -1010,6 +1044,7 @@
 		font-size: 0.8em;
 		user-select: none;
 		cursor: pointer;
+		transform: translateY(-15px);
 	}
 
 	.bottom-row{

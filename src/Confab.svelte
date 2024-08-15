@@ -31,6 +31,9 @@
 	let commentingDisabledReason = null;
 	let commentCount;
 
+	let anonymousCommentingEnabled = false;
+	let refreshUserAuth = false;
+
 	let authPanel;
 	let isAuthenticated;
 
@@ -84,6 +87,9 @@
 	let rootActions = {
 		getApi: () => {
 			return PUBLIC_API_URL;
+		},
+		getAnonCommentingEnabled: () => {
+			return anonymousCommentingEnabled;
 		},
 		refreshComments: async () => {
 			let response, json;
@@ -259,11 +265,51 @@
 		},
 		getNewCommentAnimDuration: () => {
 			return newCommentAnimDuration;
-		}
+		},
+		anonLogin: async () => {
+			let response, json;
+			try {
+				response = await fetch(PUBLIC_API_URL + "/user/anon-login", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+				});
+
+				json = await response?.json();
+			} catch{} finally {
+				//TODO: handle ratelimit response, then captcha
+				if(response?.ok){
+					localStorage.setItem("jwtToken", json.token);
+					refreshUserAuth = true;
+					return;
+				}
+			}
+		},
 	};
 
 	onMount(async () => {
 		commentLocation = window.location.href;
+		
+		await fetch(PUBLIC_API_URL + "/user/anonymous-commenting-enabled", {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json"
+			},
+		})
+		.then((response) => {
+			if (response.ok) {
+				return response.json();
+			}
+			return Promise.reject(response);
+		})
+		.then((json) => {
+			anonymousCommentingEnabled = json.enabled;
+		})
+		.catch(() => {
+			loginState = "email";
+		});
+
 		await rootActions.refreshComments();
 		rootActions.scrollToUrlHash();
 	});
@@ -292,7 +338,7 @@
 	});
 
 	const addTopLevelComment = () => {
-		if (!userData.email) {
+		if (!userData.userId && !rootActions.getAnonCommentingEnabled()) {
 			rootActions.scrollToAuthPanel();
 			return;
 		}
@@ -316,7 +362,7 @@
 <main class:main-dark={darkMode}>
 	<CommentHistoryModal bind:enabled={commentHistoryModalEnabled} comment={commentHistoryItem} {rootActions} {userData}/>
 
-	<UserLogin bind:this={authPanel} {rootActions} {userData} apiAvailable={comments === undefined ? "pending" : !(comments === false)} bind:isAuthenticated={isAuthenticated}/>
+	<UserLogin bind:this={authPanel} {rootActions} {userData} apiAvailable={comments === undefined ? "pending" : !(comments === false)} {refreshUserAuth} bind:isAuthenticated={isAuthenticated}/>
 
 	{#if isAuthenticated && userData.role === UserRole.Admin}
 		{#await import("$lib/components/admin/moderation-queue-panel.svelte")}		<!--https://www.okupter.com/blog/svelte-await-block -->
