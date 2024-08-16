@@ -68,7 +68,8 @@
 
 		if(localStorage.getItem("jwtToken") === null){
 			if(rootActions.getAnonCommentingEnabled()){
-				await rootActions.anonLogin();	// if anonymous commenting is enabled, get anon auth token
+				if(!(await rootActions.anonLogin()))	// if anonymous commenting is enabled, get anon auth token
+					return;
 			} else {
 				rootActions.scrollToAuthPanel();
 				return;

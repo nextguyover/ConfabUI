@@ -33,6 +33,7 @@
 
 	let anonymousCommentingEnabled = false;
 	let refreshUserAuth = false;
+	let currentlyAttemptingAnonLogin = false;
 
 	let authPanel;
 	let isAuthenticated;
@@ -267,6 +268,11 @@
 			return newCommentAnimDuration;
 		},
 		anonLogin: async () => {
+			if(!currentlyAttemptingAnonLogin)
+				currentlyAttemptingAnonLogin = true;
+			else
+				return false;
+
 			let response, json;
 			try {
 				response = await fetch(PUBLIC_API_URL + "/user/anon-login", {
@@ -282,9 +288,11 @@
 				if(response?.ok){
 					localStorage.setItem("jwtToken", json.token);
 					refreshUserAuth = true;
-					return;
 				}
 			}
+
+			currentlyAttemptingAnonLogin = false;
+			return true;
 		},
 	};
 
