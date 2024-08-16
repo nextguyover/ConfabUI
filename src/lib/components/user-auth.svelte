@@ -716,15 +716,19 @@
 					</div>
 				{/if}
 			{:else if loginState == "anonymous"}
-				<div class="user-login-unavailable-login-btn" role="button" tabindex="0" on:click={() => loginState = "email"} on:keypress={() => loginState = "email"}>
-					Go to login
+				<div class="user-login-unavailable-login-btn-container">
+					<div class="user-login-unavailable-login-btn" role="button" tabindex="0" on:click={() => loginState = "email"} on:keypress={() => loginState = "email"}>
+						Go to login
+					</div>
 				</div>
 				<br/><br/>
 				<div class="user-login-title">Join the conversation!</div>
 				<br/>
 			{:else if loginState == "unavailable"}
-				<div class="user-login-unavailable-login-btn" role="button" tabindex="0" on:click={() => loginState = "email"} on:keypress={() => loginState = "email"}>
-					Go to login
+				<div class="user-login-unavailable-login-btn-container">
+					<div class="user-login-unavailable-login-btn" role="button" tabindex="0" on:click={() => loginState = "email"} on:keypress={() => loginState = "email"}>
+						Go to login
+					</div>
 				</div>
 				<br/><br/>
 				<div class="user-login-title">Comments are unavailable right now. Please try again later.</div>
@@ -1036,11 +1040,16 @@
 		color: red;
 	}
 
+	.user-login-unavailable-login-btn-container {
+		width: 100%;
+		display:flex;
+		justify-content: flex-end;
+	}
+
 	.user-login-unavailable-login-btn {
 		color: var(--text-color);
 		opacity: 0.3;
 		text-align: right;
-		width: 100%;
 		font-size: 0.8em;
 		user-select: none;
 		cursor: pointer;
