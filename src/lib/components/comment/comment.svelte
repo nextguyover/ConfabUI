@@ -60,19 +60,23 @@
 	const toggleVote = async (isUpvote) => {
 		if(isForDisplay || comment.isDeleted) return;
 
-		if (!userData.email) {
-			rootActions.scrollToAuthPanel();
-			return;
-		}
-
 		const VoteType = {
 			None: 0,
 			Upvote: 1,
 			Downvote: 2,
 		};
 
+		if(localStorage.getItem("jwtToken") === null){
+			if(rootActions.getAnonCommentingEnabled()){
+				await rootActions.anonLogin();	// if anonymous commenting is enabled, get anon auth token
+			} else {
+				rootActions.scrollToAuthPanel();
+				return;
+			}
+		}
+
 		if (isUpvote) {
-			if (comment.userVote == VoteType.None) {
+			if (comment.userVote == VoteType.None || comment.userVote == undefined) {
 				comment.userVote = VoteType.Upvote;
 				comment.upvotes += 1;
 			} else if (comment.userVote == VoteType.Upvote) {
@@ -84,7 +88,7 @@
 				comment.downvotes -= 1;
 			}
 		} else {
-			if (comment.userVote == VoteType.None) {
+			if (comment.userVote == VoteType.None || comment.userVote == undefined) {
 				comment.userVote = VoteType.Downvote;
 				comment.downvotes += 1;
 			} else if (comment.userVote == VoteType.Upvote) {

@@ -723,7 +723,7 @@
 				<div class="user-login-title">Join the conversation!</div>
 				<br/>
 			{:else if loginState == "unavailable"}
-				<div class="user-login-unavailable-login-btn" role="button" tabindex="0" on:click={() => loginState = "pending"} on:keypress={() => loginState = "pending"}>
+				<div class="user-login-unavailable-login-btn" role="button" tabindex="0" on:click={() => loginState = "email"} on:keypress={() => loginState = "email"}>
 					Go to login
 				</div>
 				<br/><br/>
