@@ -14,17 +14,18 @@
 	export let userData;
 	export let apiAvailable;
 	export let isAuthenticated = false;
-	export let refreshUserAuth = false;
 
     const PUBLIC_API_URL = getContext("PUBLIC_API_URL");
 
 	let loginState = "awaitingApi"; //email, code, pending, authenticated, unavailable, awaitingApi
 
-    $: {
-		if(refreshUserAuth !== undefined)
-			loginState = apiAvailable === "pending" ? "awaitingApi" : 
-				apiAvailable === false ? "unavailable" : 
-				"pending";
+	$: refreshUserAuth(), apiAvailable;
+	
+	export function refreshUserAuth(dummy){
+		console.log("refreshUserAuth");
+		loginState = apiAvailable === "pending" ? "awaitingApi" : 
+			apiAvailable === false ? "unavailable" : 
+			"pending";
 	}
 
 	const UserRole = {

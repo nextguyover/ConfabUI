@@ -66,10 +66,14 @@
 			Downvote: 2,
 		};
 
+		let refreshAfterVote = false;
+
 		if(localStorage.getItem("jwtToken") === null){
 			if(rootActions.getAnonCommentingEnabled()){
 				if(!(await rootActions.anonLogin()))	// if anonymous commenting is enabled, get anon auth token
 					return;
+				else
+					refreshAfterVote = true;
 			} else {
 				rootActions.scrollToAuthPanel();
 				return;
@@ -113,6 +117,10 @@
 				voteType: comment.userVote,
 			}),
 		});
+
+		if (refreshAfterVote) {
+			await rootActions.refreshComments();
+		}
 	};
 
 	const addReply = () => {
@@ -194,6 +202,8 @@
 	}
 
 	let submitReply = async (content) => {
+		let refreshAfterSubmit = false;
+
 		if(localStorage.getItem("jwtToken") === null){
 			if(rootActions.getAnonCommentingEnabled()){
 				await rootActions.anonLogin();	// if anonymous commenting is enabled, get anon auth token

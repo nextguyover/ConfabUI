@@ -32,7 +32,7 @@
 	let commentCount;
 
 	let anonymousCommentingEnabled = false;
-	let refreshUserAuth = false;
+	let refreshUserAuth;
 	let currentlyAttemptingAnonLogin = false;
 
 	let authPanel;
@@ -284,15 +284,18 @@
 
 				json = await response?.json();
 			} catch{} finally {
+				currentlyAttemptingAnonLogin = false;
+
 				//TODO: handle ratelimit response, then captcha
 				if(response?.ok){
 					localStorage.setItem("jwtToken", json.token);
-					refreshUserAuth = true;
+					refreshUserAuth();
+					return true;
+				} else {
+					return false;
 				}
 			}
 
-			currentlyAttemptingAnonLogin = false;
-			return true;
 		},
 	};
 
@@ -315,7 +318,7 @@
 			anonymousCommentingEnabled = json.enabled;
 		})
 		.catch(() => {
-			loginState = "email";
+			anonymousCommentingEnabled = false;
 		});
 
 		await rootActions.refreshComments();
@@ -370,7 +373,7 @@
 <main class:main-dark={darkMode}>
 	<CommentHistoryModal bind:enabled={commentHistoryModalEnabled} comment={commentHistoryItem} {rootActions} {userData}/>
 
-	<UserLogin bind:this={authPanel} {rootActions} {userData} apiAvailable={comments === undefined ? "pending" : !(comments === false)} {refreshUserAuth} bind:isAuthenticated={isAuthenticated}/>
+	<UserLogin bind:this={authPanel} {rootActions} {userData} apiAvailable={comments === undefined ? "pending" : !(comments === false)} bind:refreshUserAuth={refreshUserAuth} bind:isAuthenticated={isAuthenticated}/>
 
 	{#if isAuthenticated && userData.role === UserRole.Admin}
 		{#await import("$lib/components/admin/moderation-queue-panel.svelte")}		<!--https://www.okupter.com/blog/svelte-await-block -->
