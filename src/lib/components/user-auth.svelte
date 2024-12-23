@@ -21,8 +21,7 @@
 
 	$: refreshUserAuth(), apiAvailable;
 	
-	export function refreshUserAuth(dummy){
-		console.log("refreshUserAuth");
+	export function refreshUserAuth(){
 		loginState = apiAvailable === "pending" ? "awaitingApi" : 
 			apiAvailable === false ? "unavailable" : 
 			"pending";
