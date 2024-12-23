@@ -118,25 +118,23 @@
 				}
 			}
 
-			if(userData.email || userData.isAnon){
-				try {
-					response = await fetch(PUBLIC_API_URL + "/comment/commenting-enabled-at-location", {
-							method: "POST",
-						headers: {
-							"Content-Type": "application/json",
-							Authorization: "Bearer " + localStorage.getItem("jwtToken"),
-						},
-							body: JSON.stringify({ location: commentLocation }),
-						});
-					json = await response.json();
-				} catch{} finally {
-					if (response?.ok && json) {
-						commentingEnabled = json.enabled;
-						commentingDisabledReason = json.reason;
-					}
-					else{
-						commentingEnabled = true;
-					}
+			try {
+				response = await fetch(PUBLIC_API_URL + "/comment/commenting-enabled-at-location", {
+						method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: "Bearer " + localStorage.getItem("jwtToken"),		// does thi need to be authorised??
+					},
+						body: JSON.stringify({ location: commentLocation }),
+					});
+				json = await response.json();
+			} catch{} finally {
+				if (response?.ok && json) {
+					commentingEnabled = json.enabled;
+					commentingDisabledReason = json.reason;
+				}
+				else{
+					commentingEnabled = true;
 				}
 			}
 		},
