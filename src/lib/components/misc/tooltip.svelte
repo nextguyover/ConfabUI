@@ -80,7 +80,7 @@ on:focusout={() => showTooltip = false} >
         --tooltip-anim-duration: 0.2s;
         --tooltip-color: rgb(51, 51, 51);
         --tooltip-text-color: rgb(209, 209, 209);
-        --tooltip-text-size: 0.8em;
+        --tooltip-text-size: 0.8rem;
 
         display: flex;
         align-items: center;
@@ -104,6 +104,7 @@ on:focusout={() => showTooltip = false} >
         z-index: 300;
         color: var(--tooltip-text-color);
         font-size: var(--tooltip-text-size);
+        font-weight: 400;
         text-align: center;
         pointer-events: none;
         overflow-wrap:break-word; 
@@ -119,7 +120,7 @@ on:focusout={() => showTooltip = false} >
         content: "";
         position: absolute;
         left: calc(50% - var(--arrow-size));
-        top: calc(calc(-2 * var(--arrow-size)) + 1px);
+        top: calc(calc(-2 * var(--arrow-size)) + 2px);
         border-width: var(--arrow-size);
         border-style: solid;
         border-color: transparent transparent var(--tooltip-color) transparent;
