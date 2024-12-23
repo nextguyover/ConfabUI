@@ -3,6 +3,7 @@
     import { faPencil, faSpinner, faCheck, faTrashCan, faFireFlameCurved, faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 
 	import Tooltip from "../misc/tooltip.svelte";
+    import CommentTag from "../comment/comment-tag.svelte";
 
     const PUBLIC_API_URL = getContext("PUBLIC_API_URL");
 	import { getContext, onMount } from "svelte";
@@ -17,6 +18,7 @@
     export let editTime = null;
     export let authorId;
     export let authorUsername;
+    export let isAnon;
     export let location;
 
     export let refreshQueueAction = null;
@@ -166,6 +168,11 @@
             <div class="profile-info">
                 <img class="profile-pic" src={PUBLIC_API_URL + "/user/get-profile-picture/" + authorId} alt="Profile" />
                 <span class="username">{authorUsername}</span>
+                <div class="user-tags">
+                    {#if isAnon}
+                        <CommentTag tagType={"anon"} />
+                    {/if}
+                </div>
             </div>
             <div class="timestamp">
                 {rootActions.formatTimeAgo(Date.parse(creationTime))}
@@ -312,6 +319,7 @@
 
     .username {
         padding-left: 8px;
+        padding-right: 8px;
     }
 
     .content {

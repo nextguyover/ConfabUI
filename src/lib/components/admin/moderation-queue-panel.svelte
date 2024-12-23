@@ -102,6 +102,7 @@
                                                     content={queueComment.parentContent}
                                                     authorId={queueComment.parentAuthorId}
                                                     authorUsername={queueComment.parentAuthorUsername}
+                                                    isAnon={queueComment.parentIsAnon}
                                                     isParent={true}
                                                     location={queueLocation.location}
                                                 />
@@ -115,6 +116,7 @@
                                                 editTime={queueComment.editTime}
                                                 authorId={queueComment.authorId}
                                                 authorUsername={queueComment.authorUsername}
+                                                isAnon={queueComment.isAnon}
                                                 location={queueLocation.location}
                                                 refreshQueueAction={refreshData}
                                                 permaDeleteAllModQueueSetUserId={permaDeleteAllModQueueSetUserId}

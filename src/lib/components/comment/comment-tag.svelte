@@ -1,15 +1,25 @@
 <script>
     export let tagType;
     import Fa from 'svelte-fa/src/fa.svelte'
-    import { faUser } from '@fortawesome/free-solid-svg-icons'
+    import { faUser, faUserSecret } from '@fortawesome/free-solid-svg-icons'
+    import Tooltip from "../misc/tooltip.svelte";
 </script>
 
-<div class="comment-tag" class:comment-tag-is-author={tagType == "author"} class:comment-tag-admin={tagType == "admin"}>
+<div class="comment-tag" 
+    class:comment-tag-is-author={tagType == "author"} 
+    class:comment-tag-admin={tagType == "admin"}
+    class:comment-tag-anon={tagType == "anon"}
+>
     {#if tagType == "author"}
         <Fa icon={faUser} />
     {/if}
     {#if tagType == "admin"}
         Admin
+    {/if}
+    {#if tagType == "anon"}
+        <Tooltip tooltip="Anonymous User" tooltipEnabled={tagType == "anon"}>
+            <Fa icon={faUserSecret} />
+        </Tooltip>
     {/if}
 </div>
 
@@ -29,5 +39,9 @@
 
     .comment-tag-admin {
         background-color: rgb(189, 23, 23);
+    }
+
+    .comment-tag-anon {
+        background-color: rgb(54, 54, 54);
     }
 </style>

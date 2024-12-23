@@ -789,6 +789,9 @@
 								{#if comment.isAdmin}
 									<CommentTag tagType={"admin"} />
 								{/if}
+								{#if comment.isAnon}
+									<CommentTag tagType={"anon"} />
+								{/if}
 							</div>
 							{#if commentCollapsed && childCommentCount > 0}
 								<div class="collapsed-child-count">
