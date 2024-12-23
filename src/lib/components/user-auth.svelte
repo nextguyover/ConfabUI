@@ -317,10 +317,12 @@
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
+					Authorization: "Bearer " + localStorage.getItem("jwtToken"),	// sends anonymous token if present
 				},
 				body: JSON.stringify({
 					email: email,
 					loginCode: verificationCode,
+					mergeAnonAccount: localStorage.getItem("jwtToken") != null,	// merge anon account if anonymously logged in
 				}),
 			})
 
