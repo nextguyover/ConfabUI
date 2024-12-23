@@ -18,6 +18,7 @@
 		userId: null,
 		username: null,
 		role: null,
+		isAnon: null,
 	};
 	const UserRole = {
 		Standard: 0,
@@ -117,7 +118,7 @@
 				}
 			}
 
-			if(userData.email){
+			if(userData.email || userData.isAnon){
 				try {
 					response = await fetch(PUBLIC_API_URL + "/comment/commenting-enabled-at-location", {
 							method: "POST",
@@ -163,6 +164,7 @@
 					userId: null,
 					username: null,
 					role: null,
+					isAnon: null,
 				};
 			} else {
 				userData = newUserData;

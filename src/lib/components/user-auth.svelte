@@ -146,6 +146,7 @@
 					userId: json.userId,
 					username: json.username,
 					role: json.role,
+					isAnon: json.isAnon,
 				});
 
 				if(json.isAnon){
