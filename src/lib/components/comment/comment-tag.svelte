@@ -18,7 +18,9 @@
     {/if}
     {#if tagType == "anon"}
         <Tooltip tooltip="Anonymous User" tooltipEnabled={tagType == "anon"}>
-            <Fa icon={faUserSecret} />
+            <span class="comment-tag-anon-icon">
+                <Fa icon={faUserSecret} />
+            </span>
         </Tooltip>
     {/if}
 </div>
