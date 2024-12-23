@@ -6,7 +6,7 @@
 	import CommentTextarea from "./comment-textarea.svelte";
 
 	import Fa from "svelte-fa/src/fa.svelte";
-	import { faChevronUp, faChevronDown, faCaretUp, faCaretDown, faReply, faPaperPlane, faXmark, faCircleNotch, faSpinner, faLink, faUser, faAnglesUp, faComments, faUserSlash, faTrashCan, faPencil, faTriangleExclamation, faTrashCanArrowUp, faUserPlus, faDumpsterFire, faFireFlameCurved, faCheck } from "@fortawesome/free-solid-svg-icons";
+	import { faChevronUp, faChevronDown, faCaretUp, faCaretDown, faReply, faPaperPlane, faXmark, faCircleNotch, faSpinner, faLink, faUser, faAnglesUp, faComments, faUserSlash, faTrashCan, faPencil, faTriangleExclamation, faTrashCanArrowUp, faUserPlus, faDumpsterFire, faFireFlameCurved, faCheck, faUsers, faUsersSlash } from "@fortawesome/free-solid-svg-icons";
 
 	export let comment;
 	export let parent = null;
@@ -776,7 +776,7 @@
 							</div>
 							<div class="username" class:username-collapsed={commentCollapsed} class:username-deleted={comment.isDeleted}>
 								{#if userData.role == UserRole.Admin}
-									<span class="user-banned">{comment.isBanned ? "[Banned] " : ""}</span>{comment.isDeleted ? "[Deleted] " : ""} {comment.authorUsername} 
+									<span class="user-banned">{comment.isBanned ? ((comment.isAnon ? "[IP " : "[") + "Banned] ") : ""}</span>{comment.isDeleted ? "[Deleted] " : ""} {comment.authorUsername} 
 								{:else}
 									{comment.isDeleted ? "[Deleted]" : comment.authorUsername}
 								{/if}
@@ -990,7 +990,7 @@
 										</div>
 									</div>
 								</Tooltip>
-								<Tooltip tooltip="Permanently Delete User's All Pending Comments">
+								<Tooltip tooltip="Permanently Delete All User's Pending Comments">
 									<div role="button" tabindex={parentOrCommentCollapsed ? -1 : 0} on:click={permaDeleteAllModQueue} on:keypress={permaDeleteAllModQueue} on:mouseleave={() => confirmPermaDeleteAllModQueue = false} on:focusout={() => confirmPermaDeleteAllModQueue = false} class="comment-btn-icon-container" class:comment-btn-error={confirmPermaDeleteAllModQueue}>
 										<div class="comment-btn-icon">
 											<div class="comment-btn-icon-inner" class:delete-confirm={confirmPermaDeleteAllModQueue}>
@@ -1010,14 +1010,18 @@
 							{/if}
 
 							{#if userData.role == UserRole.Admin && userData.userId != comment.authorId && !comment.isBanned}
-								<Tooltip tooltip="Ban User">		
+								<Tooltip tooltip={comment.isAnon ? "Ban IP Address" : "Ban User"}>		
 									<div role="button" tabindex={parentOrCommentCollapsed ? -1 : 0} on:click={banUser} on:keypress={banUser} class="comment-btn-icon-container">
 										<div class="comment-btn-icon">
 											<div class="comment-btn-icon-inner">
 												{#if banPending}
 													<Fa icon={faSpinner} spin/>
 												{:else}
-													<Fa icon={faUserSlash} />
+													{#if comment.isAnon}
+														<Fa icon={faUsersSlash} />
+													{:else}
+														<Fa icon={faUserSlash} />
+													{/if}
 												{/if}
 											</div>
 										</div>
@@ -1026,14 +1030,18 @@
 							{/if}
 
 							{#if userData.role == UserRole.Admin && comment.isBanned}
-								<Tooltip tooltip="Unban User">
+								<Tooltip tooltip={comment.isAnon ? "Unban IP Address" : "Unban User"}>
 									<div role="button" tabindex={parentOrCommentCollapsed ? -1 : 0} on:click={unBanUser} on:keypress={unBanUser} class="comment-btn-icon-container">
 										<div class="comment-btn-icon">
 											<div class="comment-btn-icon-inner">
 												{#if unBanPending}
 													<Fa icon={faSpinner} spin/>
 												{:else}
-													<Fa icon={faUserPlus} />
+													{#if comment.isAnon}
+														<Fa icon={faUsers} />
+													{:else}
+														<Fa icon={faUserPlus} />
+													{/if}
 												{/if}
 											</div>
 										</div>
