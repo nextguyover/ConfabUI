@@ -5,7 +5,7 @@
 	import { getContext, onMount } from "svelte";
 
 	import Fa from "svelte-fa/src/fa.svelte";
-	import { faKey, faRightToBracket, faSpinner, faArrowLeft, faHashtag, faCheck, faXmark, faCircleNotch, faUser, faEnvelope, faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
+	import { faKey, faRightToBracket, faSpinner, faArrowLeft, faHashtag, faCheck, faXmark, faUser, faEnvelope, faFloppyDisk, faUserNinja } from "@fortawesome/free-solid-svg-icons";
 
 	import ConfabLogo from "../icons/logo.svelte"
     import Loading from "./misc/loading.svelte";
@@ -621,7 +621,7 @@
 							{emailError}
 						</div>
 					{/if}
-					<div class="user-login-passwordless">
+					<div class="user-login-subtitle-dark">
 						<Fa icon={faKey} /> Passwordless login
 					</div>
 				</div>
@@ -663,7 +663,7 @@
 							{/if}
 						</div>
 					</div>
-					<div class="user-login-passwordless">
+					<div class="user-login-subtitle-dark">
 						<Fa icon={faKey} /> Passwordless login
 					</div>
 				</div>
@@ -729,6 +729,10 @@
 				<br/><br/>
 				<div class="user-login-title">Join the conversation!</div>
 				<br/>
+				
+				<div class="user-login-subtitle-dark user-login-subtitle-anon">
+					<Fa icon={faUserNinja} /> Anonymous Commenting
+				</div>
 			{:else if loginState == "unavailable"}
 				<div class="user-login-unavailable-login-btn-container">
 					<div class="user-login-unavailable-login-btn" role="button" tabindex="0" on:click={() => loginState = "email"} on:keypress={() => loginState = "email"}>
@@ -889,11 +893,15 @@
 		background-color: var(--btn-color-main-disabled);
 	}
 
-	.user-login-passwordless {
+	.user-login-subtitle-dark {
 		opacity: 0.2;
 		text-align: center;
 		padding: 15px 0;
 		user-select: none;
+	}
+
+	.user-login-subtitle-anon {
+		padding: 15px 0 0 0;
 	}
 
 	.user-login-code-options-top {
