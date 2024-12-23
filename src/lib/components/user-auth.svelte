@@ -138,6 +138,7 @@
 				if(json.isAnon && !rootActions.getAnonCommentingEnabled()){
 					localStorage.removeItem("jwtToken");
 					loginState = "email";
+					rootActions.refreshComments();
 					return;
 				}
 
@@ -158,6 +159,7 @@
 			.catch(() => {
 				localStorage.removeItem("jwtToken");
 				loginState = rootActions.getAnonCommentingEnabled() ? "anonymous" : "email";
+				rootActions.refreshComments();
 			});
 		} else {
 			loginState = rootActions.getAnonCommentingEnabled() ? "anonymous" : "email";
