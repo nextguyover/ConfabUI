@@ -590,7 +590,7 @@
 				<Loading/>
 			{:else if loginState == "email"}
 				<div class="user-login-title">
-					{#if rootActions.getAnonCommentingEnabled()}
+					{#if userData.isAnon === true}
 						Sign in for more features
 						<div class="user-login-subtitle">Receive reply notifications, change username, and more...</div>
 						{:else}
