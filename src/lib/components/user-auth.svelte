@@ -179,6 +179,7 @@
         VerificationEmailsRateLimit: 8,
         AuthenticationDisabled: 9,
         MaxNewSignupsLimitFailure: 10,
+		CaptchaRequired: 11,
     }
 
 	const emailSubmit = async () => {

@@ -39,6 +39,10 @@
 	let authPanel;
 	let isAuthenticated;
 
+	let hCaptchaSiteKey = "";
+	let hCaptchaContainer;
+	let hCaptchaWidgetID;
+
 	let newCommentAnimDuration = 600;
 
 	let refreshCommentCount = () => {
@@ -286,7 +290,38 @@
 			} catch{} finally {
 				currentlyAttemptingAnonLogin = false;
 
-				//TODO: handle ratelimit response, then captcha
+				if(response?.ok && json.outcome == 11){
+					hCaptchaSiteKey = json.captchaSitekey;
+					
+					if(hCaptchaWidgetID === undefined){
+						hCaptchaWidgetID = hcaptcha.render(hCaptchaContainer, {
+							theme: darkMode ? "dark" : "light",
+							size: "invisible",
+							sitekey: hCaptchaSiteKey,
+						})
+					}
+
+					let token;
+					try{
+						let { response, _ } = await hcaptcha.execute(hCaptchaWidgetID, { async: true })
+						token = response;
+					} catch {
+						return false;
+					}
+					
+					try {
+						response = await fetch(PUBLIC_API_URL + "/user/anon-login", {
+							method: "POST",
+							headers: {
+								"Content-Type": "application/json",
+							},
+							body: JSON.stringify({ captchaToken: token }),
+						});
+
+						json = await response?.json();
+					} catch{} 
+				}
+
 				if(response?.ok){
 					localStorage.setItem("jwtToken", json.token);
 					refreshUserAuth();
@@ -397,6 +432,11 @@
 			There was an error loading the admin panel!
 			<p style="color: red">{error.message}</p>
 		{/await}
+	{/if}
+
+	{#if anonymousCommentingEnabled}
+		<script src="https://js.hcaptcha.com/1/api.js?render=explicit"></script>
+		<div class="captcha" bind:this={hCaptchaContainer}></div>
 	{/if}
 
 	<section>
@@ -560,5 +600,9 @@
 		.comment-sort {
 			padding-top: 10px;
 		}
+	}
+
+	.captcha {
+		display: none;
 	}
 </style>
