@@ -134,13 +134,6 @@
 				return Promise.reject(response);
 			})
 			.then((json) => {
-				if(json.isAnon && !rootActions.getAnonCommentingEnabled()){
-					localStorage.removeItem("jwtToken");
-					loginState = "email";
-					rootActions.refreshComments();
-					return;
-				}
-
 				rootActions.initUserData({
 					email: json.email,
 					userId: json.userId,
