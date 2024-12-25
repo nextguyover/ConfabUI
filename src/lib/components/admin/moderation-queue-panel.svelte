@@ -8,6 +8,9 @@
     import ModerationQueueComment from "./moderation-queue-comment.svelte";
 
     export let rootActions;
+    export const refreshModQueue = () => {
+        refreshData();
+    }
 
     let panelCollapsed = true;
     

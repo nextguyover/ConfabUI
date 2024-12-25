@@ -577,6 +577,7 @@
 				});
 			} catch{} finally {
 				if (response?.ok) {
+					rootActions.refreshModQueue();
 					await rootActions.refreshComments();
 				}
 				modApprovePending = false;

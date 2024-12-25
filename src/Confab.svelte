@@ -46,6 +46,8 @@
 
 	let newCommentAnimDuration = 600;
 
+	let refreshModQueue;
+
 	let refreshCommentCount = () => {
 		if (!comments) return;
 
@@ -338,6 +340,9 @@
 			}
 
 		},
+		refreshModQueue: () => {
+			refreshModQueue();
+		},
 	};
 
 	onMount(async () => {
@@ -421,7 +426,7 @@
 			<p style="margin: 20px 0;">Loading Moderation Queue Panel...</p>
 		{:then ModQueuePanel}
 			<br/>
-			<ModQueuePanel.default {rootActions}/>
+			<ModQueuePanel.default {rootActions} bind:refreshModQueue={refreshModQueue}/>
 		{:catch error}
 			There was an error loading the moderation queue panel!
 			<p style="color: red">{error.message}</p>
