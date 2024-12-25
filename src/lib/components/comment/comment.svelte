@@ -57,6 +57,9 @@
 
 	let deletedContentHidden = true;
 
+	let upvotePending = false;
+	let downvotePending = false;
+
 	const toggleVote = async (isUpvote) => {
 		if(isForDisplay || comment.isDeleted) return;
 
@@ -70,7 +73,22 @@
 
 		if(localStorage.getItem("jwtToken") === null){
 			if(rootActions.getAnonCommentingEnabled()){
-				if(!(await rootActions.anonLogin()))	// if anonymous commenting is enabled, get anon auth token
+
+				if(upvotePending || downvotePending) return;
+
+				// show spinner if anon login required (since this process could take a while)
+				if(isUpvote) upvotePending = true
+				else downvotePending = true;
+				
+				let anonLoginSuccessful;
+				try {
+					anonLoginSuccessful = await rootActions.anonLogin();
+				} catch {} 
+
+				upvotePending = false;
+				downvotePending = false;
+
+				if(!anonLoginSuccessful)	// if anonymous commenting is enabled, get anon auth token
 					return;
 				else
 					refreshAfterVote = true;
@@ -857,20 +875,28 @@
 							<!-- <Tooltip tooltip="Upvote comment" showAfterDelayMs={commentButtonTooltipLongHoverDelayMs}> -->
 							<div role="button" tabindex={parentOrCommentCollapsed ? -1 : 0} on:click={() => toggleVote(true)} on:keypress={() => toggleVote(true)} class="comment-btn-icon-container">
 									<div class="comment-btn-icon {comment.userVote == 1 ? 'upvote-btn-active' : ''}">
-										<div class="upvote-btn comment-btn-icon-inner">
-											<Fa icon={faChevronUp} />
-										</div>
-										{comment.upvotes ? comment.upvotes : (comment.upvotes = 0, 0)}
+										{#if upvotePending}
+											<Fa icon={faSpinner} spin/>
+										{:else}
+											<div class="upvote-btn comment-btn-icon-inner">
+												<Fa icon={faChevronUp} />
+											</div>
+											{comment.upvotes ? comment.upvotes : (comment.upvotes = 0, 0)}
+										{/if}
 									</div>
 								</div>
 							<!-- </Tooltip> -->
 							<!-- <Tooltip tooltip="Downvote comment" showAfterDelayMs={commentButtonTooltipLongHoverDelayMs}> -->
 								<div role="button" tabindex={parentOrCommentCollapsed ? -1 : 0} on:click={() => toggleVote(false)} on:keypress={() => toggleVote(false)} class="comment-btn-icon-container">
 									<div class="comment-btn-icon {comment.userVote == 2 ? 'downvote-btn-active' : ''}">
-										<div class="downvote-btn comment-btn-icon-inner {comment.userHasDownvoted ? 'downvote-btn-active' : ''}">
-											<Fa icon={faChevronDown} />
-										</div>
-										{comment.downvotes ? comment.downvotes : (comment.downvotes = 0, 0)}
+										{#if downvotePending}
+											<Fa icon={faSpinner} spin/>
+										{:else}
+											<div class="downvote-btn comment-btn-icon-inner {comment.userHasDownvoted ? 'downvote-btn-active' : ''}">
+												<Fa icon={faChevronDown} />
+											</div>
+											{comment.downvotes ? comment.downvotes : (comment.downvotes = 0, 0)}
+										{/if}
 									</div>
 								</div>
 							<!-- </Tooltip> -->

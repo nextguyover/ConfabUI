@@ -42,6 +42,7 @@
 	let hCaptchaSiteKey = "";
 	let hCaptchaContainer;
 	let hCaptchaWidgetID;
+	let hCaptchaExecuting = false;
 
 	let newCommentAnimDuration = 600;
 
@@ -301,12 +302,17 @@
 						})
 					}
 
+					if(hCaptchaExecuting) return false;
+
 					let token;
 					try{
+						hCaptchaExecuting = true;
 						let { response, _ } = await hcaptcha.execute(hCaptchaWidgetID, { async: true })
 						token = response;
 					} catch {
 						return false;
+					} finally {
+						hCaptchaExecuting = false;
 					}
 					
 					try {
