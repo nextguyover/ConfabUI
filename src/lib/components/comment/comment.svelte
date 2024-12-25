@@ -379,10 +379,16 @@
 			commentErrorMessage = "Comment is too short. Must be at least 3 characters long.";
 			return false;
 		}
+
 		if(content.length > 10000) {
 			commentErrorMessage = "Comment is too long. Must be less than 10000 characters long.";
 			return false;
 		} 
+
+		if(comment.content === newReplyContent){
+			commentErrorMessage = "No changes have been made to the comment.";
+			return false;
+		}
 		
 		return true;
 	}
