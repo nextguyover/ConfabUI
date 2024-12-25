@@ -71,7 +71,7 @@
 
 		let refreshAfterVote = false;
 
-		if(localStorage.getItem("jwtToken") === null){
+		if(localStorage.getItem("confab_jwt") === null){
 			if(rootActions.getAnonCommentingEnabled()){
 
 				if(upvotePending || downvotePending) return;
@@ -128,7 +128,7 @@
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
-				Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+				Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
 			},
 			body: JSON.stringify({
 				commentId: comment.commentId,
@@ -222,7 +222,7 @@
 	let submitReply = async (content) => {
 		let refreshAfterSubmit = false;
 
-		if(localStorage.getItem("jwtToken") === null){
+		if(localStorage.getItem("confab_jwt") === null){
 			if(rootActions.getAnonCommentingEnabled()){
 				await rootActions.anonLogin();	// if anonymous commenting is enabled, get anon auth token
 			} else {
@@ -237,7 +237,7 @@
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
-					Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+					Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
 				},
 				body: JSON.stringify({
 					location: rootActions.getCommentLocation(),
@@ -340,7 +340,7 @@
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
-						Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+						Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
 					},
 					body: JSON.stringify({
 						commentId: comment.commentId,
@@ -413,7 +413,7 @@
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
-						Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+						Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
 					},
 					body: JSON.stringify({
 						id: comment.commentId,
@@ -450,7 +450,7 @@
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
-						Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+						Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
 					},
 					body: JSON.stringify({
 						id: comment.commentId,
@@ -476,7 +476,7 @@
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
-						Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+						Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
 					},
 					body: JSON.stringify({
 						id: comment.authorId,
@@ -502,7 +502,7 @@
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
-						Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+						Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
 					},
 					body: JSON.stringify({
 						id: comment.authorId,
@@ -542,7 +542,7 @@
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
-						Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+						Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
 					},
 					body: JSON.stringify({
 						id: comment.authorId,
@@ -569,7 +569,7 @@
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
-						Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+						Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
 					},
 					body: JSON.stringify({
 						id: comment.commentId,
@@ -610,7 +610,7 @@
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
-						Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+						Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
 					},
 					body: JSON.stringify({
 						id: comment.commentId,
@@ -650,7 +650,7 @@
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
-						Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+						Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
 					},
 					body: JSON.stringify({
 						id: comment.authorId,

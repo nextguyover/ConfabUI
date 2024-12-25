@@ -105,7 +105,7 @@
 						method: "POST",
 					headers: {
 						"Content-Type": "application/json",
-						Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+						Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
 					},
 						body: JSON.stringify({ location: commentLocation, sort: commentSortTypeSelected }),
 					});
@@ -128,7 +128,7 @@
 						method: "POST",
 					headers: {
 						"Content-Type": "application/json",
-						Authorization: "Bearer " + localStorage.getItem("jwtToken"),		// does thi need to be authorised??
+						Authorization: "Bearer " + localStorage.getItem("confab_jwt"),		// does thi need to be authorised??
 					},
 						body: JSON.stringify({ location: commentLocation }),
 					});
@@ -329,7 +329,7 @@
 				}
 
 				if(response?.ok){
-					localStorage.setItem("jwtToken", json.token);
+					localStorage.setItem("confab_jwt", json.token);
 					refreshUserAuth();
 					return true;
 				} else {

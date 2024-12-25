@@ -119,12 +119,12 @@
 	};
 
 	const refreshUserData = async () => {
-		if (localStorage.getItem("jwtToken") != null) {
+		if (localStorage.getItem("confab_jwt") != null) {
 			await fetch(PUBLIC_API_URL + "/user/get-info", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
-					Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+					Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
 				},
 			})
 			.then((response) => {
@@ -150,7 +150,7 @@
 				}
 			})
 			.catch(() => {
-				localStorage.removeItem("jwtToken");
+				localStorage.removeItem("confab_jwt");
 				loginState = rootActions.getAnonCommentingEnabled() ? "anonymous" : "email";
 				rootActions.refreshComments();
 			});
@@ -313,19 +313,19 @@
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
-					Authorization: "Bearer " + localStorage.getItem("jwtToken"),	// sends anonymous token if present
+					Authorization: "Bearer " + localStorage.getItem("confab_jwt"),	// sends anonymous token if present
 				},
 				body: JSON.stringify({
 					email: email,
 					loginCode: verificationCode,
-					mergeAnonAccount: localStorage.getItem("jwtToken") != null,	// merge anon account if anonymously logged in
+					mergeAnonAccount: localStorage.getItem("confab_jwt") != null,	// merge anon account if anonymously logged in
 				}),
 			})
 
 			json = await response?.json();
 		} catch{} finally {
 			if(response?.ok){
-				localStorage.setItem("jwtToken", json.token);
+				localStorage.setItem("confab_jwt", json.token);
 
 				email = "";
 				verificationCode = "";
@@ -375,7 +375,7 @@
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json",
-					Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+					Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
 				},
 			});
 		} catch{} finally {
@@ -444,7 +444,7 @@
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
-					Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+					Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
 				},
 				body: JSON.stringify({ newUsername: userNameEditValue }),
 			});
@@ -488,7 +488,7 @@
 	}
 
 	const logout = () => {
-		localStorage.removeItem("jwtToken");
+		localStorage.removeItem("confab_jwt");
 		rootActions.initUserData(null);
 		loginState = "email";
 	};
@@ -546,7 +546,7 @@
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+                        Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
                     },
                     body: JSON.stringify({
                         enabled: newState,
@@ -566,7 +566,7 @@
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json",
-					Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+					Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
 				}
 			})
 			json = await response.json();

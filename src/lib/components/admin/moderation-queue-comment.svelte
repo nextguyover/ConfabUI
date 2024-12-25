@@ -47,7 +47,7 @@
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
-						Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+						Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
 					},
 					body: JSON.stringify({
 						id: id,
@@ -89,7 +89,7 @@
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
-						Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+						Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
 					},
 					body: JSON.stringify({
 						id: id,
@@ -130,7 +130,7 @@
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
-						Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+						Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
 					},
 					body: JSON.stringify({
 						id: authorId,

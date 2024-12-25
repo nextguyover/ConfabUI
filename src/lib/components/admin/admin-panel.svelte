@@ -86,7 +86,7 @@
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+                    Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
                 },
             })
 
@@ -116,7 +116,7 @@
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+                    Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
                 },
                 body: JSON.stringify({
                     location: currentLocation,
@@ -149,7 +149,7 @@
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+                    Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
                 },
                 body: JSON.stringify({
                     location: currentLocation,
@@ -185,7 +185,7 @@
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+                    Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
                 },
             })
             json = await response.json();
@@ -258,7 +258,7 @@
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+                        Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
                     },
                     body: JSON.stringify({
                         commentingStatus: newValue === "enabled" ? 0 : newValue === "locked" ? 1 : newValue === "hidden" ? 2 : null,
@@ -307,7 +307,7 @@
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+                        Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
                     },
                     body: JSON.stringify({
                         votingEnabled: newValue === "enabled" ? true : false,
@@ -357,7 +357,7 @@
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+                        Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
                     },
                     body: JSON.stringify({
                         accountCreationEnabled: newValue === "enabled" ? true : false
@@ -406,7 +406,7 @@
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+                        Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
                     },
                     body: JSON.stringify({
                         accountLoginEnabled: newValue === "enabled" ? true : false
@@ -473,7 +473,7 @@
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+                        Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
                     },
                 })
             } catch{} finally{
@@ -562,7 +562,7 @@
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+                        Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
                     },
                     body: JSON.stringify({
                         location: currentLocation,
@@ -612,7 +612,7 @@
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+                        Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
                     },
                     body: JSON.stringify({
                         location: currentLocation,
@@ -662,7 +662,7 @@
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+                        Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
                     },
                     body: JSON.stringify({
                         location: currentLocation,
@@ -711,7 +711,7 @@
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+                        Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
                     },
                     body: JSON.stringify({
                         adminNotifGlobal: newValue === "enabled",
@@ -760,7 +760,7 @@
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+                        Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
                     },
                     body: JSON.stringify({
                         adminNotifEditGlobal: newValue === "enabled",
@@ -809,7 +809,7 @@
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+                        Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
                     },
                     body: JSON.stringify({
                         adminNotifLocal: newValue === "enabled",
@@ -858,7 +858,7 @@
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+                        Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
                     },
                     body: JSON.stringify({
                         adminNotifEditLocal: newValue === "enabled",
@@ -907,7 +907,7 @@
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+                        Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
                     },
                     body: JSON.stringify({
                         userNotifGlobal: newValue === "enabled",
@@ -956,7 +956,7 @@
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+                        Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
                     },
                     body: JSON.stringify({
                         userNotifLocal: newValue === "enabled",
@@ -1021,7 +1021,7 @@
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+                    Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
                 },
             })
             json = await response.json();
@@ -1041,7 +1041,7 @@
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+                    Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
                 },
                 body: JSON.stringify(contentFilters)
             })
