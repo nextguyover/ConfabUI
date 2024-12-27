@@ -130,40 +130,38 @@
 
 	const refreshUserData = async () => {
 		if (localStorage.getItem("confab_jwt") != null) {
-			await fetch(PUBLIC_API_URL + "/user/get-info", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
-				},
-			})
-			.then((response) => {
-				if (response.ok) {
-					return response.json();
-				}
-				return Promise.reject(response);
-			})
-			.then((json) => {
-				rootActions.initUserData({
-					email: json.email,
-					userId: json.userId,
-					username: json.username,
-					role: json.role,
-					isAnon: json.isAnon,
-				});
+			try{
+				let response = await fetch(PUBLIC_API_URL + "/user/get-info", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: "Bearer " + localStorage.getItem("confab_jwt"),
+					},
+				})
+				
+				if(response?.ok){
+					let json = await response.json();
 
-				if(json.isAnon){
-					loginState = "email";
-				} else {
-					loginState = "authenticated";
-					getChangeUsernameEnabled();
+					rootActions.initUserData({
+						email: json.email,
+						userId: json.userId,
+						username: json.username,
+						role: json.role,
+						isAnon: json.isAnon,
+					});
+			
+					if(json.isAnon){
+						loginState = "email";
+					} else {
+						loginState = "authenticated";
+						getChangeUsernameEnabled();
+					}
+				} else if (response?.status >= 400 && response?.status < 500) {	// in this case token invalid (expired, banned, etc.)
+					localStorage.removeItem("confab_jwt");
+					loginState = rootActions.getAnonCommentingEnabled() ? "anonymous" : "email";
+					rootActions.refreshComments();
 				}
-			})
-			.catch(() => {
-				localStorage.removeItem("confab_jwt");
-				loginState = rootActions.getAnonCommentingEnabled() ? "anonymous" : "email";
-				rootActions.refreshComments();
-			});
+			} catch {}
 		} else {
 			loginState = rootActions.getAnonCommentingEnabled() ? "anonymous" : "email";
 		}
