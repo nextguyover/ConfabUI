@@ -17,7 +17,7 @@
 
     const PUBLIC_API_URL = getContext("PUBLIC_API_URL");
 
-	let loginState = "awaitingApi"; //email, code, pending, authenticated, unavailable, awaitingApi
+	let loginState = "awaitingApi"; //email, code, pending, authenticated, unavailable, awaitingApi, anonymous
 
 	$: refreshUserAuth(), apiAvailable;
 	
@@ -66,7 +66,11 @@
 		if(emailParam && authCodeParam){
 			history.replaceState(null, "", window.location.origin + window.location.pathname);
 
-			while(loginState !== "authenticated" && loginState !== "email" && loginState !== "unavailable"){
+			while(loginState !== "authenticated" 
+				&& loginState !== "email" 
+				&& loginState !== "unavailable"
+				&& loginState !== "anonymous"
+			){
 				await new Promise(r => setTimeout(r, 100));
 			}
 
