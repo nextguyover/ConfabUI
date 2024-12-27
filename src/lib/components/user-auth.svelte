@@ -86,10 +86,16 @@
 			codeSubmit();
 		}
 
+		// At the moment, just scrolls to auth panel. Ideally, this should include an additional token
+		// to automatically disable reply notifications, without having to sign in first 
 		if(urlParams.get('Confab_notification_settings')){
 			history.replaceState(null, "", window.location.origin + window.location.pathname);
 
-			while(loginState !== "authenticated" && loginState !== "email" && loginState !== "unavailable"){
+			while(loginState !== "authenticated" 
+				&& loginState !== "email" 
+				&& loginState !== "unavailable"
+				&& loginState !== "anonymous"
+			){
 				await new Promise(r => setTimeout(r, 100));
 			}
 			
