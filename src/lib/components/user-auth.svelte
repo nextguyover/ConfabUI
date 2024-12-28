@@ -5,7 +5,7 @@
 	import { getContext, onMount } from "svelte";
 
 	import Fa from "svelte-fa/src/fa.svelte";
-	import { faKey, faRightToBracket, faSpinner, faArrowLeft, faHashtag, faCheck, faXmark, faUser, faEnvelope, faFloppyDisk, faUserNinja } from "@fortawesome/free-solid-svg-icons";
+	import { faKey, faRightToBracket, faSpinner, faArrowLeft, faHashtag, faCheck, faXmark, faUser, faEnvelope, faFloppyDisk, faUserNinja, faCaretDown } from "@fortawesome/free-solid-svg-icons";
 
 	import ConfabLogo from "../icons/logo.svelte"
     import Loading from "./misc/loading.svelte";
@@ -735,6 +735,10 @@
 				<div class="user-login-subtitle-dark user-login-subtitle-anon">
 					<Fa icon={faUserNinja} /> Anonymous Commenting
 				</div>
+
+				<div class="comment-section-pointer-arrow">
+					<Fa icon={faCaretDown} />
+				</div>
 			{:else if loginState == "unavailable"}
 				<div class="user-login-unavailable-login-btn-container">
 					<div class="user-login-unavailable-login-btn" role="button" tabindex="0" on:click={() => loginState = "pending"} on:keypress={() => loginState = "pending"}>
@@ -1089,4 +1093,28 @@
 		cursor: pointer;
 		text-decoration: underline;
 	}
+
+	.comment-section-pointer-arrow{
+		height: 0;
+		color: var(--comment-color-grey-mid);
+		font-size: 2em;
+		transform: translateY(13px);
+		animation: arrowAnimation 2.5s infinite;
+	}
+
+	@keyframes arrowAnimation {
+        0%, 15%, 35%, 100% {
+            transform: translateY(13px);
+        }
+        5%, 25% {
+            transform: translateY(calc(13px + 6px));
+        }
+    }
+
+	@media(max-width: 300px){
+		.comment-section-pointer-arrow{
+			display: none;
+		}
+	}
+
 </style>
