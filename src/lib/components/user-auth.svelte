@@ -601,7 +601,7 @@
 					{#if userData.isAnon === true}
 						Sign in for more features
 						<div class="user-login-subtitle">Receive reply notifications, change username, and more...</div>
-						{:else}
+					{:else}
 						Enter email to start commenting
 					{/if}
 				</div>
@@ -737,7 +737,7 @@
 				</div>
 			{:else if loginState == "unavailable"}
 				<div class="user-login-unavailable-login-btn-container">
-					<div class="user-login-unavailable-login-btn" role="button" tabindex="0" on:click={() => loginState = "email"} on:keypress={() => loginState = "email"}>
+					<div class="user-login-unavailable-login-btn" role="button" tabindex="0" on:click={() => loginState = "pending"} on:keypress={() => loginState = "pending"}>
 						Go to login
 					</div>
 				</div>
