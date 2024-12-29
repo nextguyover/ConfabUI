@@ -52,6 +52,19 @@
 
 	let flashAuth = false;
 
+	let showPointerArrow = false;
+	let resetPointerArrowTimeout;
+	$: resetPointerArrow(), showPointerArrow;
+
+	function resetPointerArrow(){
+		if(showPointerArrow){
+			if (resetPointerArrowTimeout !== undefined) clearTimeout(resetPointerArrowTimeout);
+			resetPointerArrowTimeout = setTimeout(() => {
+				showPointerArrow = false;
+			}, 1800);
+		}
+	}
+
 	const onProfilePicLoad = createLoadObserver(() => {
 		profilePicLoaded = true;
 	});
@@ -592,7 +605,7 @@
 </script>
 
 <section id="confab-auth" on:flashElement={flashElement}>
-	<div class="user-login-container" class:flash-auth={flashAuth}>
+	<div class="user-login-container" class:flash-auth={flashAuth} on:click={() => showPointerArrow = true}>
 		<div class="user-login">
 			{#if loginState == "pending" || loginState == "awaitingApi"}
 				<Loading/>
@@ -735,10 +748,12 @@
 				<div class="user-login-subtitle-dark user-login-subtitle-anon">
 					<Fa icon={faUserNinja} /> Anonymous Commenting
 				</div>
-
-				<div class="comment-section-pointer-arrow">
-					<Fa icon={faCaretDown} />
-				</div>
+				
+				{#if showPointerArrow}
+					<div class="comment-section-pointer-arrow">
+						<Fa icon={faCaretDown} />
+					</div>
+				{/if}
 			{:else if loginState == "unavailable"}
 				<div class="user-login-unavailable-login-btn-container">
 					<div class="user-login-unavailable-login-btn" role="button" tabindex="0" on:click={() => loginState = "pending"} on:keypress={() => loginState = "pending"}>
@@ -1099,7 +1114,9 @@
 		color: var(--comment-color-grey-mid);
 		font-size: 2em;
 		transform: translateY(13px);
-		animation: arrowAnimation 2.5s infinite;
+		animation: arrowAnimation 2.5s infinite, arrowFade 2s linear;
+		opacity: 1;
+		transition: opacity 0.2s;
 	}
 
 	@keyframes arrowAnimation {
@@ -1114,6 +1131,15 @@
 	@media(max-width: 300px){
 		.comment-section-pointer-arrow{
 			display: none;
+		}
+	}
+
+	@keyframes arrowFade {
+		0%, 60%, 100% {
+			opacity: 0;
+		}
+		10%, 50% {
+			opacity: 1;
 		}
 	}
 
