@@ -288,13 +288,12 @@
 		border: 1px solid var(--outline-color-grey-dark);
 		border-radius: 0 0 4px 4px;
 		border-top: none;
-		border-bottom: none;
         padding: 0 3px;
         padding-top: 2px;
         background-image: linear-gradient(
             0deg,
-            var(--comment-color-grey-mid) 0%,
-            var(--textarea-background) 38%,
+            var(--comment-color-grey) 0,
+            var(--textarea-background) 10px,
             var(--textarea-background) 82%
         );
         display: flex;
